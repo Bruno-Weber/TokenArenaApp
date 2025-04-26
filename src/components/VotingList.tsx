@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { votings } from "@/data/votings";
 import VotingCard from "./VotingCard";

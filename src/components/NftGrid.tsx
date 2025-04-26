@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import NftCard from "./NftCard";
 import NftModal from "./NftModal";

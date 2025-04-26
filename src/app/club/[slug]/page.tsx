@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { clubProfile } from "@/data/clubProfile";
 import ClubProfileBanner from "@/components/ClubProfileBanner";

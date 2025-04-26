@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { userProfile } from "@/data/userProfile";
 import UserWalletCard from "@/components/UserWalletCard";
