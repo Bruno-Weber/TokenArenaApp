@@ -9,7 +9,15 @@ const VotingList: React.FC = () => {
 
   const handleVote = (votingId: string, optionId: string) => {
     setVotingState(prev => prev.map(v =>
-      v.id === votingId ? { ...v, userVoted: true } : v
+      v.id === votingId
+        ? {
+            ...v,
+            userVoted: true,
+            options: v.options.map(opt =>
+              opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
+            )
+          }
+        : v
     ));
   };
 
