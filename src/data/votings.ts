@@ -1,4 +1,4 @@
-import { Comment, Voting, VotingOption, VotingResult } from '@/components/VotingCard';
+import { Comment, Voting } from '@/components/VotingCard';
 
 export const votings: Voting[] = [
   {
