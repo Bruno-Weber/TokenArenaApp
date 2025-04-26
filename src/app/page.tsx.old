@@ -1,0 +1,61 @@
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import ClubGrid from "@/components/ClubGrid";
+import ParticipateNow from "@/components/ParticipateNow";
+import MetricsDashboard from "@/components/MetricsDashboard";
+import OnChainFeed from "@/components/OnChainFeed";
+import Footer from "@/components/Footer";
+import { clubs } from "@/data/clubs";
+import { metrics } from "@/data/metrics";
+import { feed } from "@/data/feed";
+import { useTheme } from "@/context/ThemeContext";
+import { useLang } from "@/context/LangContext";
+
+export default function Home() {
+  const { theme } = useTheme();
+  const { lang } = useLang();
+
+  const handleViewToken = (club: { name: string; logo: string }) => {
+    alert(`Visualizar token do clube: ${club.name}`);
+  };
+
+  // Exemplo simples de textos dinâmicos para PT/EN
+  const t = {
+    heroTitle: {
+      pt: "O futuro do engajamento esportivo é agora!",
+      en: "The future of sports engagement is now!",
+    },
+    heroSubtitle: {
+      pt: "Participe, vote, colecione e viva experiências exclusivas com seu clube.",
+      en: "Participate, vote, collect and enjoy exclusive experiences with your club.",
+    },
+    participate: {
+      pt: "Participar Agora",
+      en: "Join Now",
+    },
+  };
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-white via-zinc-100 to-purple-100 dark:from-black dark:via-zinc-900 dark:to-purple-950 pb-20 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <section className="text-center mb-16">
+          <h1 className="text-4xl font-extrabold text-zinc-900 dark:text-white mb-4 drop-shadow" aria-label={t.heroTitle[lang]}>{t.heroTitle[lang]}</h1>
+          <p className="text-lg text-zinc-700 dark:text-gray-300 mb-8" aria-label={t.heroSubtitle[lang]}>{t.heroSubtitle[lang]}</p>
+          <button
+            className="bg-gradient-to-r from-purple-500 via-blue-500 to-purple-600 hover:from-purple-600 hover:to-blue-600 text-white py-3 px-8 rounded-xl font-bold text-lg shadow-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+            aria-label={t.participate[lang]}
+          >
+            {t.participate[lang]}
+          </button>
+        </section>
+        <Header />
+        <Hero />
+        <ClubGrid clubs={clubs} onViewToken={handleViewToken} />
+        <ParticipateNow />
+        <MetricsDashboard metrics={metrics} />
+        <OnChainFeed feed={feed} />
+        <Footer />
+      </div>
+    </main>
+  );
+}
