@@ -30,7 +30,8 @@ const ClubCard: React.FC<ClubCardProps> = ({ name, logo, onViewToken }) => {
           <Image
             src={logo}
             alt={name}
-            fill
+            width={150}
+            height={150}
             className="object-contain drop-shadow-2xl"
           />
           <div className="absolute -bottom-6 left-0 w-full h-1/2 bg-gradient-to-b from-purple-500/30 to-transparent blur-sm transform scale-y-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
