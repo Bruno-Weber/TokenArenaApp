@@ -5,24 +5,43 @@ import NftCard from "./NftCard";
 import NftModal from "./NftModal";
 import { nfts } from "@/data/nfts";
 
-const getUnique = (arr: any[], key: string) => [...new Set(arr.map(item => item[key]))];
+interface Nft {
+  id: string | number;
+  name: string;
+  image: string;
+  price: number;
+  available: number;
+  status: "disponível" | "esgotado" | "muito raro";
+  description: string;
+  club: string;
+  rarity: string;
+  [key: string]: string | number; // Index signature
+}
+
+const getUnique = (arr: Nft[], key: keyof Nft) => [...new Set(arr.map(item => item[key]))];
 
 const NftGrid: React.FC = () => {
+  const [selectedNft, setSelectedNft] = useState<Nft | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedClub, setSelectedClub] = useState("");
   const [selectedRarity, setSelectedRarity] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1000);
-  const [modalNft, setModalNft] = useState<any | null>(null);
 
-  const clubs = getUnique(nfts, "club");
-  const rarities = getUnique(nfts, "rarity");
+  const clubs = getUnique(nfts as Nft[], "club");
+  const rarities = getUnique(nfts as Nft[], "rarity");
 
-  const filtered = nfts.filter(nft =>
-    (selectedClub === "" || nft.club === selectedClub) &&
-    (selectedRarity === "" || nft.rarity === selectedRarity) &&
-    nft.price >= minPrice &&
-    nft.price <= maxPrice
-  );
+  const handleNftClick = (nft: Nft) => {
+    setSelectedNft(nft);
+    setIsModalOpen(true);
+  };
+
+  const filtered = nfts.filter((nft) => {
+    const matchesClub = !selectedClub || nft.club === selectedClub;
+    const matchesRarity = !selectedRarity || nft.rarity === selectedRarity;
+    const matchesPrice = nft.price >= minPrice && nft.price <= maxPrice;
+    return matchesClub && matchesRarity && matchesPrice;
+  });
 
   return (
     <div>
@@ -78,14 +97,18 @@ const NftGrid: React.FC = () => {
       {/* Grid de NFTs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {filtered.map(nft => (
-          <NftCard
-            key={nft.id}
-            {...nft}
-            onBuy={() => setModalNft(nft)}
-          />
+          <div key={nft.id} onClick={() => handleNftClick(nft as Nft)} className="cursor-pointer">
+            <NftCard {...nft} />
+          </div>
         ))}
       </div>
-      <NftModal isOpen={!!modalNft} onClose={() => setModalNft(null)} nft={modalNft || {}} />
+      {selectedNft && (
+        <NftModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          nft={selectedNft}
+        />
+      )}
     </div>
   );
 };

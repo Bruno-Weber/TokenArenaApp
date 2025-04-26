@@ -7,7 +7,6 @@ import ClubStats from "@/components/ClubStats";
 import ClubActions from "@/components/ClubActions";
 import ClubHistory from "@/components/ClubHistory";
 import StakeModal from "@/components/StakeModal";
-import { useTheme } from "@/context/ThemeContext";
 import { useLang } from "@/context/LangContext";
 
 const mockUser = {
@@ -20,7 +19,6 @@ const mockUser = {
 };
 
 const ClubProfilePage = () => {
-  const { theme } = useTheme();
   const { lang } = useLang();
   const t = {
     title: {

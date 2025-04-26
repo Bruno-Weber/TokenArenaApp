@@ -1,87 +1,115 @@
+"use client";
+
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import VoteOptionButton from "./VoteOptionButton";
 import VotingResults from "./VotingResults";
 
-interface VotingCardProps {
-  voting: any;
-  onVote: (votingId: number, optionId: string) => void;
-  confetti: boolean;
+interface VotingOption {
+  id: string;
+  label: string;
+  votes: number;
 }
 
-const VotingCard: React.FC<VotingCardProps> = ({ voting, onVote, confetti }) => {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [voted, setVoted] = useState(voting.userVoted);
-  const [showConfetti, setShowConfetti] = useState(false);
+interface Comment {
+  id: string;
+  text: string;
+  author: string;
+  timestamp: string;
+}
 
-  const handleVote = (optionId: string) => {
-    setSelected(optionId);
-    setTimeout(() => {
+interface VotingResult {
+  optionId: string;
+  label: string;
+  votes: number;
+  percentage: number;
+}
+
+interface Voting {
+  id: string;
+  title: string;
+  description: string;
+  options: VotingOption[];
+  deadline: string;
+  userVoted: boolean;
+  status: "open" | "closed";
+  results?: VotingResult[];
+  comments?: Comment[];
+}
+
+interface VotingCardProps {
+  voting: Voting;
+  onVote: (votingId: string, optionId: string) => void;
+}
+
+export default function VotingCard({ voting, onVote }: VotingCardProps) {
+  const [voted, setVoted] = useState(voting.userVoted);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const handleVote = () => {
+    if (selectedOption && !voted) {
+      onVote(voting.id, selectedOption);
       setVoted(true);
-      setShowConfetti(true);
-      onVote(voting.id, optionId);
-      setTimeout(() => setShowConfetti(false), 2000);
-    }, 700);
+    }
   };
 
-  // Confetti simples com emoji (pode ser trocado por lib de confetti real)
-  const Confetti = () => (
-    <AnimatePresence>
-      {showConfetti && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-50"
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.7 }}
-          transition={{ duration: 0.7 }}
-        >
-          <span className="text-5xl select-none">🎉🎊🏆</span>
-        </motion.div>
-      )}
-    </AnimatePresence>
+  const sortedComments = voting.comments?.sort((a: Comment, b: Comment) => 
+    new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 
   return (
-    <motion.div
-      className="relative bg-zinc-900 rounded-2xl p-6 shadow-lg border-2 border-purple-700/20 mb-8"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, type: "spring" }}
-    >
-      <Confetti />
-      <h3 className="text-xl font-bold text-white mb-2">{voting.title}</h3>
-      <p className="text-gray-300 mb-4">{voting.description}</p>
+    <div className="bg-zinc-800/50 rounded-lg p-6 backdrop-blur-sm border border-zinc-700/50">
+      <h3 className="text-xl font-bold mb-2">{voting.title}</h3>
+      <p className="text-gray-400 mb-4">{voting.description}</p>
+
       {voting.status === "open" && !voted && (
-        <div className="flex flex-col gap-3 mb-3">
-          {voting.options.map((opt: any) => (
+        <div className="space-y-4">
+          {voting.options.map((option) => (
             <VoteOptionButton
-              key={opt.id}
-              label={opt.label}
-              selected={selected === opt.id}
-              disabled={!!selected}
-              onClick={() => handleVote(opt.id)}
+              key={option.id}
+              label={option.label}
+              selected={selectedOption === option.id}
+              onClick={() => setSelectedOption(option.id)}
             />
           ))}
+          <button
+            className="w-full mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-lg font-bold disabled:opacity-50"
+            onClick={handleVote}
+            disabled={!selectedOption}
+          >
+            Votar
+          </button>
         </div>
       )}
-      {voting.status === "open" && voted && (
-        <div className="flex items-center gap-2 mt-2">
-          <span className="text-green-400 font-bold">Você já votou!</span>
-          <span className="text-2xl">✅</span>
-        </div>
-      )}
-      <div className="flex items-center gap-4 mt-4">
-        <span className="text-xs text-gray-400">Deadline: {new Date(voting.deadline).toLocaleString("pt-BR")}</span>
-      </div>
-      {voting.status === "closed" && voting.results && (
-        <VotingResults
-          results={voting.results}
-          comments={voting.comments}
-          winnerId={voting.results.reduce((a, b) => (a.percent > b.percent ? a : b)).id}
-        />
-      )}
-    </motion.div>
-  );
-};
 
-export default VotingCard;
+      {(voted || voting.status === "closed") && voting.results && (
+        <VotingResults results={voting.results} />
+      )}
+
+      <div className="mt-4 text-sm text-gray-400">
+        <span>Encerra em: {voting.deadline}</span>
+        {voting.results && (
+          <span className="ml-4">
+            Total de votos: {voting.results.reduce((sum, r) => sum + r.votes, 0)}
+          </span>
+        )}
+      </div>
+
+      {sortedComments && sortedComments.length > 0 && (
+        <div className="mt-6 border-t border-zinc-700 pt-4">
+          <h4 className="text-lg font-bold mb-3">Comentários</h4>
+          <div className="space-y-4">
+            {sortedComments.map((comment) => (
+              <div key={comment.id} className="bg-zinc-900/50 rounded p-3">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-purple-400">{comment.author}</span>
+                  <span className="text-sm text-gray-500">{comment.timestamp}</span>
+                </div>
+                <p className="text-gray-300">{comment.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

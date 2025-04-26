@@ -1,48 +1,38 @@
+"use client";
+
 import React from "react";
 import { motion } from "framer-motion";
 
-interface ResultOption {
-  id: string;
+interface VotingResult {
+  optionId: string;
   label: string;
-  percent: number;
+  votes: number;
+  percentage: number;
 }
 
 interface VotingResultsProps {
-  results: ResultOption[];
-  comments: { user: string; text: string }[];
-  winnerId: string;
+  results: VotingResult[];
 }
 
-const VotingResults: React.FC<VotingResultsProps> = ({ results, comments, winnerId }) => (
-  <div className="mt-6">
-    <h4 className="text-lg font-bold text-white mb-3">Resultados</h4>
-    <ul className="space-y-3">
-      {results.map(option => (
-        <li key={option.id} className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <span className={`font-semibold ${option.id === winnerId ? 'text-yellow-400' : 'text-purple-200'}`}>{option.label}</span>
-            {option.id === winnerId && <span className="ml-2 text-xs bg-yellow-400/20 text-yellow-300 px-2 py-1 rounded">Vencedor</span>}
-          </div>
+const VotingResults: React.FC<VotingResultsProps> = ({ results }) => (
+  <div className="space-y-4">
+    {results.map((result) => (
+      <div key={result.optionId} className="relative">
+        <div className="flex justify-between items-center mb-1">
+          <span className="font-medium text-gray-300">{result.label}</span>
+          <span className="text-purple-400 font-bold">{result.percentage}%</span>
+        </div>
+        <div className="h-2 bg-zinc-900 rounded-full overflow-hidden">
           <motion.div
-            className={`h-4 rounded bg-gradient-to-r from-purple-700 to-blue-700 relative`}
             initial={{ width: 0 }}
-            animate={{ width: `${option.percent}%` }}
-            transition={{ duration: 1 }}
-            style={{ maxWidth: '100%' }}
-          >
-            <span className="absolute left-2 top-0 text-xs text-white font-bold">{option.percent}%</span>
-          </motion.div>
-        </li>
-      ))}
-    </ul>
-    <div className="mt-6">
-      <h5 className="text-md font-bold text-white mb-2">Comentários da Comunidade</h5>
-      <ul className="space-y-2">
-        {comments.map((c, idx) => (
-          <li key={idx} className="bg-zinc-800 rounded-lg px-4 py-2 text-gray-200"><span className="font-bold text-purple-400">{c.user}:</span> {c.text}</li>
-        ))}
-      </ul>
-    </div>
+            animate={{ width: `${result.percentage}%` }}
+            className="h-full bg-purple-600"
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
+        </div>
+        <span className="text-sm text-gray-500 mt-1">{result.votes} votos</span>
+      </div>
+    ))}
   </div>
 );
 

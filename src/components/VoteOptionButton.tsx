@@ -4,22 +4,21 @@ import { motion } from "framer-motion";
 interface VoteOptionButtonProps {
   label: string;
   selected: boolean;
-  disabled: boolean;
   onClick: () => void;
 }
 
-const VoteOptionButton: React.FC<VoteOptionButtonProps> = ({ label, selected, disabled, onClick }) => (
+const VoteOptionButton: React.FC<VoteOptionButtonProps> = ({ label, selected, onClick }) => (
   <motion.button
-    className={`w-full py-3 px-5 rounded-xl font-bold text-lg shadow-md border-2 transition-all
-      ${selected ? "bg-purple-600 border-purple-400 text-white scale-105" : "bg-zinc-800 border-purple-700/30 text-purple-200 hover:bg-purple-900 hover:scale-105"}
-      ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-    whileTap={{ scale: 0.96 }}
-    whileHover={!disabled ? { scale: 1.08 } : {}}
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className={`w-full p-4 rounded-lg text-left transition-all ${
+      selected
+        ? "bg-purple-600 text-white"
+        : "bg-zinc-900/50 hover:bg-zinc-700/50 text-gray-300"
+    }`}
     onClick={onClick}
-    disabled={disabled}
-    layout
   >
-    {label}
+    <span className="font-medium">{label}</span>
   </motion.button>
 );
 

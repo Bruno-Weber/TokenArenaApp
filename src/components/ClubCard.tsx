@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface ClubCardProps {
   name: string;
@@ -26,7 +27,12 @@ const ClubCard: React.FC<ClubCardProps> = ({ name, logo, onViewToken }) => {
         
         {/* Logo container with reflection effect */}
         <div className="relative mb-6 transform group-hover:scale-110 transition-transform duration-500">
-          <img src={logo} alt={name} className="w-24 h-24 object-contain drop-shadow-2xl" />
+          <Image
+            src={logo}
+            alt={name}
+            fill
+            className="object-contain drop-shadow-2xl"
+          />
           <div className="absolute -bottom-6 left-0 w-full h-1/2 bg-gradient-to-b from-purple-500/30 to-transparent blur-sm transform scale-y-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
 
