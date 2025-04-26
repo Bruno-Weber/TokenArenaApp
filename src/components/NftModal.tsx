@@ -2,11 +2,23 @@ import React, { useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckCircleIcon, XCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from 'next/image';
+
+interface NFT {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  price: number;
+  club: string;
+  rarity: string;
+  available: number;
+}
 
 interface NftModalProps {
   isOpen: boolean;
   onClose: () => void;
-  nft: any;
+  nft: NFT;
 }
 
 const NftModal: React.FC<NftModalProps> = ({ isOpen, onClose, nft }) => {
@@ -47,7 +59,13 @@ const NftModal: React.FC<NftModalProps> = ({ isOpen, onClose, nft }) => {
             >
               <Dialog.Panel className="relative bg-zinc-900 rounded-2xl shadow-2xl border-2 border-purple-700/30 p-8 flex flex-col items-center">
                 <Dialog.Title className="text-2xl font-extrabold text-purple-400 mb-2">NFT: {nft.name}</Dialog.Title>
-                <img src={nft.image} alt={nft.name} className="w-40 h-40 object-contain rounded-xl mb-4 bg-zinc-800 border-2" />
+                <Image
+                  src={nft.image}
+                  alt={nft.name}
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-cover rounded-lg"
+                />
                 <p className="mb-2 text-gray-300 text-center">{nft.description}</p>
                 <div className="flex gap-3 mb-2">
                   <span className="text-purple-300 font-bold">{nft.price} CHZ</span>

@@ -4,7 +4,7 @@ import { useLang } from "@/context/LangContext";
 import VotingList from "@/components/VotingList";
 
 const ClubVotacoesPage = () => {
-  const { theme } = useTheme();
+  useTheme();
   const { lang } = useLang();
   const t = {
     title: {

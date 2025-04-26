@@ -4,27 +4,27 @@ import React, { useState } from "react";
 import VoteOptionButton from "./VoteOptionButton";
 import VotingResults from "./VotingResults";
 
-interface VotingOption {
+export interface VotingOption {
   id: string;
   label: string;
   votes: number;
 }
 
-interface Comment {
+export interface Comment {
   id: string;
   text: string;
   author: string;
   timestamp: string;
 }
 
-interface VotingResult {
+export interface VotingResult {
   optionId: string;
   label: string;
   votes: number;
   percentage: number;
 }
 
-interface Voting {
+export interface Voting {
   id: string;
   title: string;
   description: string;
