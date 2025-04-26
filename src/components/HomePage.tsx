@@ -15,7 +15,7 @@ import { useLang } from "@/context/LangContext";
 
 export default function HomePage() {
   const { theme } = useTheme();
-  const { lang } = useLang();
+  useLang();
 
   const handleViewToken = (club: { name: string; logo: string }) => {
     alert(`Visualizar token do clube: ${club.name}`);

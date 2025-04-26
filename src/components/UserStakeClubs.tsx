@@ -1,4 +1,5 @@
 import React from "react";
+import Image from 'next/image';
 
 interface StakeClub {
   club: string;
@@ -21,7 +22,13 @@ const UserStakeClubs: React.FC<UserStakeClubsProps> = ({ stake }) => (
     <div className="flex flex-wrap gap-5">
       {stake.map(({ club, amount }) => (
         <div key={club} className="flex items-center gap-3 bg-zinc-900 rounded-xl px-5 py-4 shadow border border-purple-700/20 min-w-[180px]">
-          <img src={clubLogos[club]} alt={club} className="w-10 h-10 rounded-full bg-white p-1" />
+          <Image
+            src={clubLogos[club]}
+            alt={`Logo do ${club}`}
+            width={40}
+            height={40}
+            className="w-10 h-10 object-contain"
+          />
           <div>
             <span className="block text-white text-lg font-bold">{amount} FAN</span>
             <span className="block text-gray-400 text-xs">{club}</span>

@@ -12,7 +12,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useLang } from "@/context/LangContext";
 
 const UserProfilePage = () => {
-  const { theme } = useTheme();
+  useTheme();
   const { lang } = useLang();
   const [avatarNftId, setAvatarNftId] = useState(userProfile.avatarNftId);
   const [editOpen, setEditOpen] = useState(false);

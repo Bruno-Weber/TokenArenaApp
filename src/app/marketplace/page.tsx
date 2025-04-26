@@ -4,7 +4,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useLang } from "@/context/LangContext";
 
 const MarketplacePage = () => {
-  const { theme } = useTheme();
+  useTheme();
   const { lang } = useLang();
 
   const t = {

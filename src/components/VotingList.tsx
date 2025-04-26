@@ -7,7 +7,7 @@ import VotingCard from "./VotingCard";
 const VotingList: React.FC = () => {
   const [votingState, setVotingState] = useState(votings);
 
-  const handleVote = (votingId: number, optionId: string) => {
+  const handleVote = (votingId: string, optionId: string) => {
     setVotingState(prev => prev.map(v =>
       v.id === votingId ? { ...v, userVoted: true } : v
     ));
@@ -21,7 +21,6 @@ const VotingList: React.FC = () => {
           key={voting.id}
           voting={voting}
           onVote={handleVote}
-          confetti={true}
         />
       ))}
     </section>

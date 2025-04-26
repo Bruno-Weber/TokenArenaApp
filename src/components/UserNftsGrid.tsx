@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Image from 'next/image';
 
 interface UserNftsGridProps {
   nfts: { id: number; name: string; image: string; rarity: string }[];
@@ -26,7 +27,13 @@ const UserNftsGrid: React.FC<UserNftsGridProps> = ({ nfts, avatarNftId, onSetAva
           animate={{ opacity: 1, y: 0 }}
           whileHover={{ scale: 1.04 }}
         >
-          <img src={nft.image} alt={nft.name} className="w-20 h-20 object-contain rounded-xl mb-2 bg-zinc-800" />
+          <Image
+            src={nft.image}
+            alt={nft.name}
+            width={300}
+            height={300}
+            className="w-full h-full object-cover rounded-lg"
+          />
           <span className="text-white font-bold text-center mb-1">{nft.name}</span>
           <span className="text-xs text-gray-400 mb-2 capitalize">{nft.rarity}</span>
           {avatarNftId === nft.id ? (

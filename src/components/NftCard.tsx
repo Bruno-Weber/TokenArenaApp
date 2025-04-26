@@ -10,24 +10,11 @@ interface NftCardProps {
   price: number;
   available: number;
   status: string;
-  rarity: string;
 }
 
-const rarityStyles: Record<string, string> = {
-  "comum": "border-gray-500",
-  "raro": "border-blue-400",
-  "lendário": "border-yellow-400",
-  "muito raro": "border-4 border-cyan-300 shadow-[0_0_16px_4px_rgba(0,255,255,0.5)] animate-pulse",
-};
 
-const rarityBadges: Record<string, string> = {
-  "comum": "bg-gray-700 text-gray-200",
-  "raro": "bg-blue-700 text-blue-200",
-  "lendário": "bg-yellow-600 text-yellow-200",
-  "muito raro": "bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 text-white border-2 border-cyan-300",
-};
 
-const NftCard: React.FC<NftCardProps> = ({ name, image, price, available, status, rarity }) => (
+const NftCard: React.FC<NftCardProps> = ({ name, image, price, available, status }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
     className="bg-zinc-800/50 rounded-lg p-4 flex flex-col items-center justify-center border border-zinc-700/50 backdrop-blur-sm"

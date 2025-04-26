@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const projectId = "cdb2aee27e61c2092cb4e51a5b15183a"; // Get this from WalletConnect Cloud
 
-const { wallets } = getDefaultWallets({
+getDefaultWallets({
   appName: "Token Arena",
   projectId,
 });
